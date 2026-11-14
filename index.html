@@ -1,12 +1,3 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<meta name="apple-mobile-web-app-title" content="Blackjack">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" href="icon-192.png">
-<style>[hidden]{display:none!important}</style>
-</head><body>
 <title>Blackjack</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1527,6 +1518,8 @@ h1,h2,h3,.page-title,.rp-title,.page h2,.panel-head h2,.sheet h2{letter-spacing:
 .pf-gap{margin:-8px 0 0!important;font:600 12px/1.3 var(--f-ui);color:#A3B5AB}.pf-gap b{color:#F3EEE2}
 /* v40.1: player total pill matches Figma (17px bold, 33px tall, 18px side padding) */
 .total.big,.total{font:700 17px/1 var(--f-ui)!important;padding:8px 18px!important;min-width:0!important}
+/* v40.2: short browser windows (Safari/Brave toolbars): bet chip sits in the ring so it never lands on the chip tray */
+@media (max-height:740px){#table.betting .pot:not(.empty) .stack{left:31px!important;top:31px!important}#table.betting .pot:not(.empty) b{top:calc(100% + 8px)!important;left:50%!important;transform:translateX(-50%)!important;font-size:18px!important}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media (max-height:720px){.card{width:60px;height:84px}.c-mid{font-size:30px}.hand{min-height:84px}.chip{width:54px;height:54px}.orb{width:62px;height:62px}.orb.o-dbl{width:52px;height:52px}.acts{min-height:88px}.pot{width:84px;height:84px}.banner h2{font-size:42px}.print{display:none}.brand h1{font-size:44px}.scene{min-height:200px}}
 </style>
@@ -2730,5 +2723,3 @@ function runScene(name) {
 if (SCENE) runScene(SCENE); else boot();
 })();
 </script>
-
-</body></html>
