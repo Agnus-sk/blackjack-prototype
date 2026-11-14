@@ -1531,6 +1531,8 @@ h1,h2,h3,.page-title,.rp-title,.page h2,.panel-head h2,.sheet h2{letter-spacing:
 .pot .stack{left:calc(50% - 17px)!important;top:calc(50% - 17px)!important}
 #table.betting .pot:not(.empty) .stack{left:calc(50% - 42px)!important;top:var(--bety,190px)!important}
 #table.betting .pot:not(.empty) b{left:calc(50% + 2px)!important;top:calc(var(--bety,190px) + 6px)!important}
+/* v40.4: short screens (browser with toolbars) have no room under the ring once cards are dealt, so the bet amount under the ring is hidden during play; the chip in the ring still shows the bet */
+@media (max-height:720px){#table:not(.betting) .pot b{display:none!important}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media (max-height:720px){.card{width:60px;height:84px}.c-mid{font-size:30px}.hand{min-height:84px}.chip{width:54px;height:54px}.orb{width:62px;height:62px}.orb.o-dbl{width:52px;height:52px}.acts{min-height:88px}.pot{width:84px;height:84px}.banner h2{font-size:42px}.print{display:none}.brand h1{font-size:44px}.scene{min-height:200px}}
 </style>
