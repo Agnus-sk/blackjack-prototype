@@ -2493,7 +2493,7 @@ function practiceDone(o, p, d) {
 }
 function onboard(then) {
   if (S.onboarded) return then();
-  S.onboarded = true; S.coins = RULES.welcome; save();
+  S.onboarded = true; S.coins = RULES.welcome; S.dailyPop = today(); save();
   const w = stepCoins(RULES.welcome, 'Here are your<br>starting coins');
   celebrate([{ html: `<span class="eyebrow cel-in" style="color:var(--gold-hi)">Welcome to Blackjack</span>${w.html}<p class="muted cel-in cel-copy" style="animation-delay:.8s">Place bets at the table. Collect ${DAILY[0]} free coins every day from the daily bonus.</p>`, fx: w.fx, gain: RULES.welcome, cta: 'Start playing' }], then);
 }
