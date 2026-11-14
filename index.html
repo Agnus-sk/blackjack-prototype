@@ -1,3 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-title" content="Blackjack">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>[hidden]{display:none!important}</style>
+</head><body>
 <title>Blackjack</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1491,6 +1500,31 @@ h1,h2,h3,.page-title,.rp-title,.page h2,.panel-head h2,.sheet h2{letter-spacing:
 .celebrate.tinted{background:linear-gradient(180deg,#02030a 0%,rgba(0,0,0,0) 30%),radial-gradient(circle at 50% 46%,color-mix(in srgb,var(--tint) 75%,#000) 0%,color-mix(in srgb,var(--tint) 45%,#05060f) 30%,color-mix(in srgb,var(--tint) 18%,#04050c) 62%,#020308 100%)!important}
 .celebrate.tinted::after{background:radial-gradient(circle at 50% 46%,transparent 0 22%,rgba(2,3,10,.5) 55%,rgba(1,2,6,.9) 100%)!important}
 .celebrate.tinted .gift-glow{background:radial-gradient(circle,rgba(255,230,150,.75),color-mix(in srgb,var(--tint) 40%,transparent) 42%,transparent 70%)!important}
+/* v40: corrections from the Figma file */
+.coins{padding:5px 6px 5px 10px!important;gap:8px!important}
+.coins .plus{margin-left:6px}
+.sheet-x{width:42px!important;height:42px!important;border-radius:13px!important;background:rgba(0,0,0,.3)!important;border:1px solid rgba(255,255,255,.1)!important}
+.acts .btn small{font:800 15px/1 var(--f-ui)!important;margin-top:6px!important}
+.respop .rp-side b{font-size:20px!important}
+.respop .rp-side small{font-size:12px!important}
+.respop.is-push .rp-side,.respop.is-push .rp-dealer{background:transparent!important;border:0!important}
+.respop.is-push .rp-title{background:none!important;box-shadow:none!important;text-shadow:none!important;padding:0!important;margin:12px 0 0!important;color:#7298FF!important;-webkit-text-fill-color:#7298FF!important;font:800 20px/1.4 var(--f-ui)!important;letter-spacing:.04em!important;text-transform:uppercase}
+.respop.is-push .rp-title::before,.respop.is-push .rp-title::after{display:none!important}
+.respop.is-push .rp-amt{display:none!important}
+.respop.is-lose .rp-title{font-size:20px!important;text-transform:none!important;letter-spacing:.02em!important}
+.respop.is-lose .rp-amt b{font-size:30px!important}
+/* profile */
+.pf-photo{overflow:visible}
+.pf-av-lvb{position:absolute;right:-14px;bottom:-6px;width:64px!important;height:66px!important}
+.pf-av-lvb b{font-size:10px!important}
+.pf .name-wrap svg,.pf .name-wrap::after{display:none!important}
+.pf .name-input{border-bottom:0!important;text-align:center}
+.pf-lvline{margin:-6px 0 0!important;display:flex;gap:16px;justify-content:center;font:700 14px/1.2 var(--f-ui);color:#A3B5AB}
+.pf-reward{margin:2px 0 0!important;display:inline-flex;align-items:center;gap:6px;padding:12px 16px;border-radius:12px;background:rgba(5,18,13,.56);border:1px solid rgba(255,255,255,.08);font:500 13px/1 var(--f-ui);color:#F3EEE2}
+.pf-reward .coin{width:16px;height:16px}.pf-reward b{color:#FFE7A0;font-weight:800;font-size:12px}
+.pf-label .pf-link{font:800 14px/1 var(--f-ui)!important;letter-spacing:0!important;text-transform:none!important;background:none;border:0;padding:0;color:#9EE0BC!important}
+.pf-mini{padding:4px 0!important}
+.pf-gap{margin:-8px 0 0!important;font:600 12px/1.3 var(--f-ui);color:#A3B5AB}.pf-gap b{color:#F3EEE2}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media (max-height:720px){.card{width:60px;height:84px}.c-mid{font-size:30px}.hand{min-height:84px}.chip{width:54px;height:54px}.orb{width:62px;height:62px}.orb.o-dbl{width:52px;height:52px}.acts{min-height:88px}.pot{width:84px;height:84px}.banner h2{font-size:42px}.print{display:none}.brand h1{font-size:44px}.scene{min-height:200px}}
 </style>
@@ -2005,26 +2039,16 @@ function rankCard(list) {
     </div>`;
 }
 const rankList = () => [...SAMPLE_RANKS, [myName(), S.coins, 1]].sort((a, b) => b[1] - a[1]);
+const lbRow = (r, k) => {
+  const lv = r[2] ? level() : (RANK_META[r[0]] || [1])[0];
+  return `<div class="lb-row${r[2] ? ' me' : ''}"><span class="pos">${k + 1}</span><span class="av">${r[2] ? `<img src="${S.photo || AVATAR_ART}" alt="">` : PLAYER_ART[r[0]] ? `<img src="${PLAYER_ART[r[0]]}" alt="">` : r[0][0]}</span><span class="nm"><b>${r[0]}${r[2] ? ' <i>(you)</i>' : ''}</b><small>Level ${lv}</small></span><span class="amt tnum">${coin}${fmt(r[1])}</span></div>`;
+};
 function ranksPage() {
-  const list = rankList(), mi = list.findIndex(r => r[2]);
-  const gap = mi > 0 ? list[mi - 1][1] - list[mi][1] : 0;
-  const pct = mi > 0 ? Math.max(4, Math.min(100, S.coins / list[mi - 1][1] * 100)) : 100;
+  const list = rankList();
   return `${pageHead('Leaderboard', false, '', 'profile')}
     <div class="lb">
-      <div class="pf-label">Your rank</div>
-      <div class="pf-card lb-me">
-        <span class="pf-pos"><b>${mi + 1}</b><sup>${ordinal(mi + 1).replace(/^\d+/, '')}</sup></span>
-        <div class="pf-body">
-          <div class="pf-row"><b>${myName()}</b><span class="lb-coins">${coin}${fmt(S.coins)}</span></div>
-          <div class="bar"><i style="width:${pct}%"></i></div>
-          <small>${mi > 0 ? `<b>${fmt(gap + 1)}</b> coins to reach ${ordinal(mi)}` : 'You are on top this week'}</small>
-        </div>
-      </div>
       <div class="pf-label">This week <span>${list.length} players</span></div>
-      <div class="pf-card lb-list">${list.map((r, k) => {
-        const lv = r[2] ? level() : (RANK_META[r[0]] || [1])[0];
-        return `<div class="lb-row${r[2] ? ' me' : ''}"><span class="pos">${k + 1}</span><span class="av">${r[2] ? `<img src="${S.photo || AVATAR_ART}" alt="">` : PLAYER_ART[r[0]] ? `<img src="${PLAYER_ART[r[0]]}" alt="">` : r[0][0]}</span><span class="nm"><b>${r[0]}${r[2] ? ' <i>(you)</i>' : ''}</b><small>Level ${lv}</small></span><span class="amt tnum">${coin}${fmt(r[1])}</span></div>`;
-      }).join('')}</div>
+      <div class="pf-card lb-list">${list.map(lbRow).join('')}</div>
     </div>`;
 }
 function friendsPage() {
@@ -2069,28 +2093,15 @@ function profileScreen() {
     <div class="home-scroll gutter pf">
       <div class="page-head"><button class="iconbtn" data-act="home" aria-label="Back">${icon('back')}</button><h2 class="page-title show" style="flex:1">Profile</h2><button class="iconbtn" data-act="settings" aria-label="Settings">${icon('gear')}</button></div>
       <div class="pf-hero">
-        <label class="pf-photo" for="photoinput" aria-label="Change photo">${photo}<span class="cam">${icon('camera')}</span></label>
+        <label class="pf-photo" for="photoinput" aria-label="Change photo">${photo}${lvBadge(lv, 'pf-av-lvb')}</label>
         <input type="file" id="photoinput" accept="image/*" hidden>
-        <div class="name-wrap"><input id="nameinput" class="name-input" maxlength="16" value="${myName().replace(/"/g, '&quot;')}" autocomplete="off" spellcheck="false" aria-label="Display name">${icon('edit', 'width:16px;height:16px')}</div>
+        <div class="name-wrap"><input id="nameinput" class="name-input" maxlength="16" value="${myName().replace(/"/g, '&quot;')}" autocomplete="off" spellcheck="false" aria-label="Display name"></div>
+        <p class="pf-lvline"><span>Level ${lv}</span><span>${XP_LEVEL - (S.xp % XP_LEVEL)} XP to level ${lv + 1}</span></p>
+        <p class="pf-reward">Next level reward ${coin}<b>+${fmt(200 * (lv + 1))}</b></p>
       </div>
-      <div class="pf-label">Your level</div>
-      <div class="pf-card pf-level">
-        ${lvBadge(lv, 'pf-lvb')}
-        <div class="pf-body">
-          <div class="pf-row"><b>Level ${lv}</b><small>${XP_LEVEL - (S.xp % XP_LEVEL)} XP to level ${lv + 1}</small></div>
-          <div class="bar"><i style="width:${lvlPct()}%"></i></div>
-          <span class="pf-next">Next level reward ${coin}<b>+${fmt(200 * (lv + 1))}</b></span>
-        </div>
-      </div>
-      <div class="pf-label">Your rank</div>
-      <button class="pf-card pf-rank" data-act="leaderboard">
-        <span class="pf-pos"><b>${mi + 1}</b><sup>${ordinal(mi + 1).replace(/^\d+/, '')}</sup></span>
-        <div class="pf-body">
-          <div class="pf-row"><b>Rank this week</b><span class="pf-link">Leaderboard<i>${icon('back')}</i></span></div>
-          <div class="bar"><i style="width:${rankPct}%"></i></div>
-          <small>${mi > 0 ? `<b>${fmt(gap + 1)}</b> coins to reach ${ordinal(mi)}` : 'You are on top this week'}</small>
-        </div>
-      </button>
+      <div class="pf-label">Your rank <button class="pf-link" data-act="leaderboard">Leaderboard<i>${icon('back')}</i></button></div>
+      <div class="pf-card lb-list pf-mini">${list.map((r, k) => [r, k]).slice(Math.max(0, Math.min(mi - 1, list.length - 3)), Math.max(0, Math.min(mi - 1, list.length - 3)) + 3).map(([r, k]) => lbRow(r, k)).join('')}</div>
+      <p class="pf-gap">${mi > 0 ? `<b>${fmt(gap + 1)}</b> coins to reach ${ordinal(mi)}` : 'You are on top this week'}</p>
       <div class="pf-label">Badges <span>${got} of ${BADGES.length}</span></div>
       <div class="pf-badges">${BADGES.map(x => { const g = x.got(); return `<div class="pf-badge${g ? ' got' : ''}"><div class="pf-art"><img src="${BADGE_IMG[x.art]}" alt="">${g ? '' : `<span class="pf-lock">${icon('lock')}</span>`}</div><b class="pf-bname">${x.name}</b></div>`; }).join('')}</div>
     </div>`, 'profile', 'nightbg');
@@ -2284,7 +2295,7 @@ function playDock(first) {
   const showDouble = !Pr && R.player.length === 2;
   const guide = Pr || (S.guide && (S.guideHands || 0) < 10);
   $('#dock').innerHTML = `<div class="acts">
-    ${showDouble ? `<button class="btn b-dbl${first ? ' pop' : ''}" data-act="double" ${canDouble ? '' : 'disabled'} aria-label="Double down">Double<small>${!canDouble ? 'Not enough' : guide ? '2× bet, 1 card' : `+${fmt(R.bet)}`}</small></button>` : ''}
+    ${showDouble ? `<button class="btn b-dbl${first ? ' pop' : ''}" data-act="double" ${canDouble ? '' : 'disabled'} aria-label="Double down">Double<small${guide && canDouble ? ' class="hint"' : ''}>${!canDouble ? 'Not enough' : guide ? '2× bet, 1 card' : `+${fmt(R.bet)}`}</small></button>` : ''}
     <button class="btn b-stand" data-act="stand" ${Pr && R.practiceStep === 1 ? 'disabled' : ''}>Stand${guide ? '<small class="hint">Keep my total</small>' : ''}</button>
     <button class="btn btn-gold" data-act="hit" ${Pr && R.practiceStep === 2 ? 'disabled' : ''}>Hit${guide ? '<small class="hint">Take a card</small>' : ''}</button>
   </div>`;
@@ -2404,7 +2415,7 @@ function resultPop(o, net) {
   const win = o.k === 'win' || o.k === 'bj', push = o.k === 'push', bust = p > 21;
   const low = S.coins < RULES.minBet;
   const tag = o.k === 'bj' ? 'Blackjack' : win ? 'Round won' : push ? 'Tie' : bust ? 'Over 21' : 'Round lost';
-  const title = o.k === 'bj' ? 'Blackjack!' : win ? 'You win!' : push ? 'Push' : bust ? 'Bust' : 'Round lost';
+  const title = o.k === 'bj' ? 'Blackjack!' : win ? 'You win!' : push ? 'Push' : 'Better luck next time';
   const line = win ? (o.k === 'bj' ? 'Perfect hand. Paid 1.5×.' : 'Nice hand!') : push ? 'Nobody wins this one.' : 'Close one. Every hand starts fresh.';
   const faceoff = `<div class="rp-vs"><span><small>You</small><b>${p}</b></span><i>vs</i><span><small>Dealer</small><b>${d}</b></span></div>`;
   const hero = o.k === 'bj' ? `<div class="rp-cards">${cardHTML(R.player[0])}${cardHTML(R.player[1])}</div>`
@@ -2416,7 +2427,7 @@ function resultPop(o, net) {
       ${win ? '<div class="rp-glow"></div>' : ''}
       ${hero}
       <h2 class="rp-title">${title}</h2>
-      ${o.k === 'lose' ? '<p class="rp-sub">Better luck next time</p>' : ''}
+      ${o.k === 'lose' ? `<p class="rp-sub">${bust ? 'You went bust this round' : 'Sorry to see you lose. Play again!'}</p>` : push ? '<p class="rp-sub">Bet returned</p>' : ''}
       <div class="rp-amt">${win ? coin : ''}<b id="rpamt">${push ? 'Bet returned' : (net > 0 ? '+0' : '−0')}</b></div>
       ${!win ? `<div class="rp-hands"><div class="rp-side"><small>You</small><div class="rp-mini">${R.player.map(c => cardHTML(c)).join('')}</div><b>${p}</b></div><i>vs</i><div class="rp-side rp-dealer"><small>Dealer</small><div class="rp-mini">${R.dealer.map(c => cardHTML(c)).join('')}</div><b>${d}</b></div></div>` : ''}
       <button class="btn btn-gold rp-cta" data-act="${low ? 'outofcoins' : 'again'}">${low ? 'Get free coins' : 'Play again'}</button>
@@ -2717,3 +2728,5 @@ function runScene(name) {
 if (SCENE) runScene(SCENE); else boot();
 })();
 </script>
+
+</body></html>
